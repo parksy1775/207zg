@@ -109,8 +109,6 @@ static err_t app_callback_received(void *arg, struct tcp_pcb *tpcb, struct pbuf 
   {
     es->state = ES_RECEIVED; //change state
     es->p = p; //set buffer pointer
-    uint8_t ibuf[100]={0};
-    memcpy(ibuf,p->payload,p->len);
 
     tcp_sent(tpcb, app_callback_sent); //register send callback
     app_send_data(tpcb, es); //send data via es->p
@@ -228,23 +226,16 @@ static void app_send_data(struct tcp_pcb *tpcb, struct tcp_echoserver_struct *es
       && (es->p->len <= tcp_sndbuf(tpcb)))
   {
     ptr = es->p;
-    struct time_packet{
-    	uint8_t head;
-    	uint8_t type;
-    	uint8_t data;
-    	uint8_t data2;
-    	uint8_t tail;
-    };
     uint8_t data[100];
     data[0] = 1;
     data[1] = 2;
     data[2] = 3;
     data[3] = 4;
     data[4] = 5;
-    struct time_packet packet;
-    memset(&packet,0,sizeof(struct time_packet));
-    wr_err = tcp_write(tpcb, data, 5, 1); //send data
-    printf("%d",ptr->payload);
+
+    memcpy(data,es->p->payload,es->p->len);
+
+    wr_err = tcp_write(tpcb, es->p->payload, es->p->len, 1); //send data
 
     if (wr_err == ERR_OK)
     {
