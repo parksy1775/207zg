@@ -1,0 +1,5 @@
+operate_gpio.c:6:6:oper	8	static
+operate_gpio.c:30:6:oper_M1	8	static
+operate_gpio.c:40:6:oper_M2	4	static
+operate_gpio.c:43:6:oper_M3	4	static
+operate_gpio.c:46:6:oper_M4	4	static

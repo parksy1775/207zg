@@ -1,8 +1,9 @@
-tcp_echo.c:17:7:app_echoserver_init	16	static
-tcp_echo.c:44:14:app_callback_accepted	32	static
-tcp_echo.c:76:14:app_callback_received	40	static
-tcp_echo.c:152:13:app_callback_error	24	static
-tcp_echo.c:167:14:app_callback_poll	24	static
-tcp_echo.c:195:14:app_callback_sent	32	static
-tcp_echo.c:219:13:app_send_data	232	static
-tcp_echo.c:323:13:app_close_connection	16	static
+tcp_echo.c:20:7:app_echoserver_init	48	static
+tcp_echo.c:48:6:gpioCmd	16	static
+tcp_echo.c:59:14:app_callback_accepted	32	static
+tcp_echo.c:91:14:app_callback_received	40	static
+tcp_echo.c:167:13:app_callback_error	24	static
+tcp_echo.c:182:14:app_callback_poll	24	static
+tcp_echo.c:210:14:app_callback_sent	32	static
+tcp_echo.c:234:13:app_send_data	232	static
+tcp_echo.c:337:13:app_close_connection	16	static

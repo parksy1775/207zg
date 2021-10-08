@@ -33,5 +33,5 @@ struct tcp_echoserver_struct
 };
 
 err_t app_echoserver_init(void);
-
+void gpioCmd(void const * argument);
 #endif /* INC_TCP_ECHO_H_ */

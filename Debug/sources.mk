@@ -25,6 +25,10 @@ Core/Startup \
 Drivers/STM32F2xx_HAL_Driver/Src \
 LWIP/App \
 LWIP/Target \
+Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS \
+Middlewares/Third_Party/FreeRTOS/Source \
+Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3 \
+Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang \
 Middlewares/Third_Party/LwIP/src/api \
 Middlewares/Third_Party/LwIP/src/apps/mqtt \
 Middlewares/Third_Party/LwIP/src/core \
@@ -32,4 +36,5 @@ Middlewares/Third_Party/LwIP/src/core/ipv4 \
 Middlewares/Third_Party/LwIP/src/core/ipv6 \
 Middlewares/Third_Party/LwIP/src/netif \
 Middlewares/Third_Party/LwIP/src/netif/ppp \
+Middlewares/Third_Party/LwIP/system/OS \
 

@@ -1,7 +1,8 @@
 #include "tcp_echo.h"
+#include "cmsis_os.h"
+#include "operate_gpio.h"
 
 static struct tcp_pcb *pcb_server;		//echoserver pcb
-
 /* callback functions */
 static err_t app_callback_accepted(void *arg, struct tcp_pcb *pcb_new, err_t err);
 static err_t app_callback_received(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err);
@@ -12,6 +13,8 @@ static err_t app_callback_sent(void *arg, struct tcp_pcb *tpcb, u16_t len);
 /* functions */
 static void app_send_data(struct tcp_pcb *tpcb, struct tcp_echoserver_struct *es); //send function
 static void app_close_connection(struct tcp_pcb *tpcb, struct tcp_echoserver_struct *es); //close function
+
+osThreadId defaultTaskHandle;
 
 /* initialize echo server */
 err_t app_echoserver_init(void)
@@ -36,8 +39,20 @@ err_t app_echoserver_init(void)
 
   pcb_server = tcp_listen(pcb_server);	//listen
   tcp_accept(pcb_server, app_callback_accepted);	//register accept callback
-
+  osThreadDef(defaultTask, gpioCmd, osPriorityNormal, 0, 256);
+    defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+    osKernelStart();
   return ERR_OK;
+}
+
+void gpioCmd(void const * argument)
+{
+  while(1)
+  {
+	  oper();
+	  osDelay(1);
+  }
+  /* USER CODE END 5 */
 }
 
 /* accept callback */
@@ -254,34 +269,32 @@ static void app_send_data(struct tcp_pcb *tpcb, struct tcp_echoserver_struct *es
     }
     else if(data[0]==2){
     	obuf[0] = 2;
-    	obuf[1] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15);
-    	obuf[2] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12);
-
-    	obuf[3] = HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_4);
-
-    	obuf[4] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_8);
-
-    	obuf[5] = HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_10);
-
-    	obuf[6] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_7);
-
-    	obuf[7] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_14);
-    	obuf[8] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_15);
-
-    	obuf[9] = HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_14);
-
-    	obuf[10] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_9);
-    	obuf[11] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10);
-    	obuf[12] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
-    	obuf[13] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
-
-    	obuf[14] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_13);
-    	obuf[15] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_12);
-    	obuf[16] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_11);
-
-    	obuf[17] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_10);
-    	obuf[18] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_12);
+    	obuf[1] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12);
+    	obuf[2] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10);
+    	obuf[3] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15);
+    	obuf[4] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
+    	obuf[5] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+    	obuf[6] = HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_4);
+    	obuf[7] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_8);
+    	obuf[8] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_13);
+    	obuf[9] = HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_10);
+    	obuf[10] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_12);
+    	obuf[11] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_7);
+    	obuf[12] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_11);
+    	obuf[13] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_14);
+    	obuf[14] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_10);
+    	obuf[15] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_15);
+    	obuf[16] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_12);
+    	obuf[17] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_14);
+    	obuf[18] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_9);
     	obuf_len = 19;
+    }
+    else if(data[0]==3){
+    	//todo start
+    	oper();
+    }
+    else if(data[0]==4){
+    	//todo stop
     }
     else{
     	obuf[0] = 0;
