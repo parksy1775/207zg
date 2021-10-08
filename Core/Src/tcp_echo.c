@@ -227,15 +227,69 @@ static void app_send_data(struct tcp_pcb *tpcb, struct tcp_echoserver_struct *es
   {
     ptr = es->p;
     uint8_t data[100];
-    data[0] = 1;
-    data[1] = 2;
-    data[2] = 3;
-    data[3] = 4;
-    data[4] = 5;
-
+    uint8_t obuf[100];
+    u16_t obuf_len = 0;
     memcpy(data,es->p->payload,es->p->len);
+    if(data[0]==1){
+    	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, data[4]);
 
-    wr_err = tcp_write(tpcb, es->p->payload, es->p->len, 1); //send data
+    	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, data[5]);
+    	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, data[6]);
+
+    	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, data[7]);
+    	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, data[8]);
+
+    	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_5, data[9]);
+    	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_6, data[10]);
+    	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_7, data[11]);
+
+    	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2, data[12]);
+    	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_3, data[13]);
+    	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, data[14]);
+    	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5, data[15]);
+
+    	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_1, data[13]);
+    	memcpy(obuf, data, es->p->len);
+    	obuf_len = 14;
+    }
+    else if(data[0]==2){
+    	obuf[0] = 2;
+    	obuf[1] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15);
+    	obuf[2] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12);
+
+    	obuf[3] = HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_4);
+
+    	obuf[4] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_8);
+
+    	obuf[5] = HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_10);
+
+    	obuf[6] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_7);
+
+    	obuf[7] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_14);
+    	obuf[8] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_15);
+
+    	obuf[9] = HAL_GPIO_ReadPin(GPIOF, GPIO_PIN_14);
+
+    	obuf[10] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_9);
+    	obuf[11] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10);
+    	obuf[12] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
+    	obuf[13] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+
+    	obuf[14] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_13);
+    	obuf[15] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_12);
+    	obuf[16] = HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_11);
+
+    	obuf[17] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_10);
+    	obuf[18] = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_12);
+    	obuf_len = 19;
+    }
+    else{
+    	obuf[0] = 0;
+    	obuf_len = 1;
+    }
+
+
+    wr_err = tcp_write(tpcb, obuf, obuf_len, 1); //send data
 
     if (wr_err == ERR_OK)
     {
