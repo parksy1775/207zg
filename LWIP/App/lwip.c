@@ -62,16 +62,16 @@ void MX_LWIP_Init(void)
   /* IP addresses initialization */
   IP_ADDRESS[0] = 192;
   IP_ADDRESS[1] = 168;
-  IP_ADDRESS[2] = 3;
-  IP_ADDRESS[3] = 68;
+  IP_ADDRESS[2] = 1;
+  IP_ADDRESS[3] = 207;
   NETMASK_ADDRESS[0] = 255;
   NETMASK_ADDRESS[1] = 255;
   NETMASK_ADDRESS[2] = 255;
   NETMASK_ADDRESS[3] = 0;
-  GATEWAY_ADDRESS[0] = 192;
-  GATEWAY_ADDRESS[1] = 168;
-  GATEWAY_ADDRESS[2] = 3;
-  GATEWAY_ADDRESS[3] = 1;
+  GATEWAY_ADDRESS[0] = 0;
+  GATEWAY_ADDRESS[1] = 0;
+  GATEWAY_ADDRESS[2] = 0;
+  GATEWAY_ADDRESS[3] = 0;
 
 /* USER CODE BEGIN IP_ADDRESSES */
 /* USER CODE END IP_ADDRESSES */
@@ -120,7 +120,8 @@ void MX_LWIP_Init(void)
 
 /* USER CODE END 3 */
 }
-void MX_LWIP_Process(){
+
+void MX_LWIP_Process(void){
 	ethernetif_input(&gnetif);
 }
 

@@ -39,9 +39,8 @@ err_t app_echoserver_init(void)
 
   pcb_server = tcp_listen(pcb_server);	//listen
   tcp_accept(pcb_server, app_callback_accepted);	//register accept callback
-  osThreadDef(defaultTask, gpioCmd, osPriorityNormal, 0, 256);
-    defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-    osKernelStart();
+
+
   return ERR_OK;
 }
 
